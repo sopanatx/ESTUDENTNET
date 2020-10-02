@@ -51,12 +51,11 @@ return view('nindex',compact('std_id'));
         $std_search = $request->input('std_id');
         $gretoken = $request->input('g-recaptcha-response');
         $chklogshow = Checkhistory::where('std_id',$std_search)->get();
-        $getnetworkip = $request->ip();
-
-       try{
+    
+       try { 
            $chkshow = checkstd::findOrFail($std_search);
        } catch (ModelNotFoundException $exception) {
-           return response()->json(['error_code' => '0015', 'message' => ' Your Request Data Not Found in our Database! ', 'IP' => $getnetworkip]);
+           return response()->json(['error_code' => '0015', 'message' => ' Your Resquest was not found! ']);
        }
 
 
@@ -68,9 +67,7 @@ return view('nindex',compact('std_id'));
         if($responseKeys["success"]) {
             return view('result',compact('chkshow','validate'))->with(array('chklogshow'=>$chklogshow));
         } else {
-            //return response()->json(['error_code' => '0013', 'message' => 'reCaptcha token Validate Error or Session Expired' , 'suggest_message' => "Please go to homepage and don't forgot to Check the reCaptcha"]);
             return redirect('/');
-          //  return alert()->message('Message', 'Optional Title');
 
         }
 
